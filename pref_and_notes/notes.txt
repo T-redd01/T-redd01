@@ -1,0 +1,1 @@
+This folder contains notes on things such as vim config and termin config as well as some github config
