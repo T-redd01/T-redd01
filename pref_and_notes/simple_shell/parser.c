@@ -57,7 +57,7 @@ void input_parser(state_of_shell *vars)
 		i++;
 	}
 	vars->args[args_idx] = NULL;
-	for (i = 0; vars->args[i] != NULL; i++)
+	/*for (i = 0; vars->args[i] != NULL; i++)
 		free(vars->args[i]);
-	free(vars->args);
+	free(vars->args);*/
 }

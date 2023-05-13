@@ -30,11 +30,23 @@ void repl_loop(state_of_shell *vars)
 		{
 			if (isatty(STDIN_FILENO))
 				write(STDOUT_FILENO, "\n", 1);
-			free(vars->inpbuf);
+			free_everthing(vars);
 			exit(0);
+		}
+
+		if (retval == 1 && *(vars->inpbuf) == '\n')
+		{
+			free(vars->inpbuf);
+			continue;
 		}
 		input_parser(vars);
 		path_exists = path_findr(vars);
+		if (!path_exists)
+		{
+			execute_cmd(vars);
+			free(vars->cmd);
+			vars->cmd = NULL;
+		}
 		free(vars->inpbuf);
 	}
 }
