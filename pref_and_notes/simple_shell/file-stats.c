@@ -26,10 +26,13 @@ int path_findr(state_of_shell *vars)
 	path_list *tmp;
 
 	if (!vars->path_env)
-	{
 		init_path_list(&(vars->path_env));
-	}
 
+	if (!stat(vars->args[0], &statbuf))
+	{
+		vars->cmd = vars->args[0];
+		return (0);
+	}
 	tmp = vars->path_env;
 	while (tmp)
 	{
@@ -45,6 +48,10 @@ int path_findr(state_of_shell *vars)
 		}
 		free(test_path);
 		tmp = tmp->next;
+	}
+	if (file_found == -1)
+	{
+		perror(vars->err_prmpt);
 	}
 	return (1);
 }

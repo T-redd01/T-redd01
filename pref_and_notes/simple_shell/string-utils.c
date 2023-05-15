@@ -34,8 +34,35 @@ char *_strcat(char *dest, char *src)
 
 	for (i = 0; dest[i]; i++)
 		;
+
 	for (j = 0; src[j]; j++, i++)
 		dest[i] = src[j];
 	dest[i] = '\0';
 	return (dest);
+}
+
+char *_itoa(int *num)
+{
+	int holder = *num, counter = 0, i;
+	char *dig;
+
+	if (!num)
+		return ("0");
+
+	while (holder)
+	{
+		counter++;
+		holder /= 10;
+	}
+
+	dig = malloc((counter + 1) * sizeof(char));
+	for (i = (counter - 1); i >= 0; i--)
+	{
+		holder = *num % 10;
+		*num /= 10;
+		dig[i] = ('0' + holder);
+	}
+	dig[counter] = '\0';
+	*num = counter;
+	return (dig);
 }

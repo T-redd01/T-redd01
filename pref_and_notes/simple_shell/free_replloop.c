@@ -12,21 +12,7 @@ void free_state_args(char **args)
 	args = NULL;
 }
 
-void free_path_list(path_list **h)
-{
-	path_list *tmp;
-
-	while (*h)
-	{
-		tmp = (*h)->next;
-		free((*h)->bin_paths);
-		free((*h));
-		(*h) = tmp;
-	}
-	(*h) = NULL;
-}
-
-void free_everthing(state_of_shell *vars)
+void free_repl(state_of_shell *vars)
 {
 	if (vars->args)
 		free_state_args(vars->args);
@@ -43,6 +29,9 @@ void free_everthing(state_of_shell *vars)
 		vars->inpbuf = NULL;
 	}
 
-	if (vars->path_env)
-		free_path_list(&(vars->path_env));
+	if (vars->err_prmpt)
+	{
+		free(vars->err_prmpt);
+		vars->err_prmpt = NULL;
+	}
 }

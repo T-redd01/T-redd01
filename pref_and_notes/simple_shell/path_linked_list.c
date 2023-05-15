@@ -35,6 +35,20 @@ path_list *create_path_node(char *full_path_env, int *st_idx)
 	return (new);
 }
 
+void free_path_list(path_list **h)
+{
+	path_list *tmp;
+
+	while (*h)
+	{
+		tmp = (*h)->next;
+		free((*h)->bin_paths);
+		free((*h));
+		(*h) = tmp;
+	}
+	(*h) = NULL;
+}
+
 path_list *append_path_node(path_list **h, char *full_path_env, int *st_idx)
 {
 	path_list *new, *tmp = *h;
