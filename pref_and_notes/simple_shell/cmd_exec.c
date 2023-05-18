@@ -8,11 +8,12 @@ int execute_cmd(state_of_shell *vars)
 	child_proc = fork();
 	if (child_proc == 0)
 	{
-		execve(vars->cmd, vars->args, environ) == -1;
+		execve(vars->cmd, vars->args, environ);
 	}
 	else
 	{
 		wait(&wstatus);
+		errno = WEXITSTATUS(wstatus);
 	}
 	return (0);
 }

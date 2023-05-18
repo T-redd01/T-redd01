@@ -1,8 +1,8 @@
 #include "main.h"
 
-int main(int ac, char **av)
+int main(__attribute__((unused)) int ac, char **av)
 {
-	state_of_shell vars = {.prog_name = NULL, .inpbuf = NULL, .args = NULL, .cmd = NULL, .path_env = NULL};
+	state_of_shell vars = {NULL, NULL, NULL, NULL, NULL, NULL};
 
 	vars.prog_name = av[0];
 	repl_loop(&vars);
