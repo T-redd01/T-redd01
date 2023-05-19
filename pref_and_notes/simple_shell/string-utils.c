@@ -21,10 +21,9 @@ size_t _strcpy(char *dest, char *src)
 	len = _strlen(src);
 	for (i = 0; i < len; i++)
 	{
-		/*printf("dest: %c - src: %c\n", dest[i], src[i]);*/
 		dest[i] = src[i];
 	}
-	src[i] = '\0';
+	dest[i] = '\0';
 	return (0);
 }
 
@@ -40,7 +39,6 @@ char *_strcat(char *dest, char *src)
 
 	for (j = 0; src[j]; j++, i++)
 	{
-		/*printf("dest: %c - src: %c\n", dest[i], src[i]);*/
 		dest[i] = src[j];
 	}
 	dest[i] = '\0';
@@ -74,12 +72,19 @@ char *_itoa(size_t *num)
 	return (dig);
 }
 
-size_t _puts(char *s)
+int _strcmp(char *s1, char *s2)
 {
-	size_t len = _strlen(s);
-
-	if (!s)
+	if (!s1 || !s2)
 		return (0);
-	write(1, s, len);
-	return (len);
+
+	while (*s1 && *s2)
+	{
+		if (*s1 != *s2)
+			return (0);
+		s1++;
+		s2++;
+	}
+	if ((*s1 == '\0' && *s2 != '\0') || (*s2 == '\0' && *s1 != '\0'))
+		return (0);
+	return (1);
 }

@@ -21,6 +21,12 @@ typedef struct all_path
 	struct all_path *next;
 } path_list;
 
+typedef struct all_builtins
+{
+	char *builtin_name;
+	/* func pointer */
+} builtin;
+
 typedef struct holder
 {
 	char *prog_name;
@@ -40,6 +46,9 @@ void sighandler(int sig);
 int eval_inp(state_of_shell *vars, size_t cmds);
 void cmd_list_handle(state_of_shell *vars, size_t cmds);
 
+/* built-ins.c */
+int built_in_findr(state_of_shell *vars);
+
 /* parser.c */
 int num_of_words(char *s);
 void sep_args(state_of_shell *vars, int word_idx, int arg_index);
@@ -53,7 +62,10 @@ size_t _strlen(char *s);
 size_t _strcpy(char *dest, char *src);
 char *_strcat(char *dest, char *src);
 char *_itoa(size_t *num);
-size_t _puts(char *s);
+int _strcmp(char *s1, char *s2);
+
+/* write_funcs.c */
+size_t _puts(char *s, int fd);
 
 /* path_linked_list.c */
 path_list *append_path_node(path_list **h, char *full_path_env, int *st_idx);

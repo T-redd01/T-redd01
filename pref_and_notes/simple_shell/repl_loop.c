@@ -6,7 +6,7 @@ void sighandler(__attribute__((unused)) int sig)
 {
 	sighit = 1;
 	errno = 130;
-	_puts("\n$ ");
+	_puts("\n$ ", 1);
 }
 
 ssize_t read_inp(char **input)
@@ -16,7 +16,7 @@ ssize_t read_inp(char **input)
 
 	if (isatty(STDIN_FILENO) && !sighit)
 	{
-		_puts("$ ");
+		_puts("$ ", 1);
 	}
 	rline = getline(input, &n, stdin);
 	sighit = 0;

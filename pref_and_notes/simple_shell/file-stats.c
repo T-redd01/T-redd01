@@ -21,7 +21,7 @@ path_list *init_path_list(path_list **h)
 int path_findr(state_of_shell *vars)
 {
 	int file_found;
-	char *test_path;
+	char *test_path, *not_fnd = ": not found\n";
 	struct stat statbuf;
 	path_list *tmp;
 
@@ -31,7 +31,6 @@ int path_findr(state_of_shell *vars)
 	if (!stat(vars->args[0], &statbuf))
 	{
 		vars->cmd = vars->args[0];
-		errno = 0;
 		return (0);
 	}
 	tmp = vars->path_env;
@@ -52,10 +51,16 @@ int path_findr(state_of_shell *vars)
 		tmp = tmp->next;
 	}
 
-	/*if (file_found == -1)
+	if (errno == 2)
+	{
+		_puts(vars->err_prmpt, 2);
+		_puts(not_fnd, 2);
+		errno = 127;
+		return (-1);
+	}
+	if (file_found == -1)
 	{
 		perror(vars->err_prmpt);
-		errno = 127;
-	}*/
+	}
 	return (-1);
 }
