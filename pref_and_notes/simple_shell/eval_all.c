@@ -19,12 +19,12 @@ void cmd_list_handle(state_of_shell *vars, size_t cmds)
 	free(num);
 }
 
-int eval_inp(state_of_shell *vars, size_t cmds)
+int eval_inp(state_of_shell *vars, __attribute__((unused)) size_t cmds)
 {
-	int path_exists, builtin_found;
+	/*int path_exists, builtin_found;*/
 
 	input_parser(vars);
-	cmd_list_handle(vars, cmds);
+	/*cmd_list_handle(vars, cmds);
 
 	builtin_found = built_in_findr(vars);
 	if (builtin_found)
@@ -32,6 +32,6 @@ int eval_inp(state_of_shell *vars, size_t cmds)
 
 	path_exists = path_findr(vars);
 	if (!path_exists)
-		execute_cmd(vars);
+		execute_cmd(vars);*/
 	return (0);
 }

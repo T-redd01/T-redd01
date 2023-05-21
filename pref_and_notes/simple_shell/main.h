@@ -21,12 +21,6 @@ typedef struct all_path
 	struct all_path *next;
 } path_list;
 
-typedef struct all_builtins
-{
-	char *builtin_name;
-	/* func pointer */
-} builtin;
-
 typedef struct holder
 {
 	char *prog_name;
@@ -36,6 +30,12 @@ typedef struct holder
 	char *cmd;
 	path_list *path_env;
 } state_of_shell;
+
+typedef struct all_builtins
+{
+	char *builtin_name;
+	int (*func_ptr)(state_of_shell *);
+} builtin;
 
 /* repl_loop.c */
 ssize_t read_inp(char **input);
@@ -49,10 +49,18 @@ void cmd_list_handle(state_of_shell *vars, size_t cmds);
 /* built-ins.c */
 int built_in_findr(state_of_shell *vars);
 
+/* builtinFuncs.c */
+int exit_shell(state_of_shell *vars);
+int change_directory(state_of_shell *vars);
+
 /* parser.c */
+void exp_parser(state_of_shell *vars);
 int num_of_words(char *s);
 void sep_args(state_of_shell *vars, int word_idx, int arg_index);
 void input_parser(state_of_shell *vars);
+
+/* expand_parse_vars.c */
+int var_exp(char **holder, state_of_shell *vars, int arg_idx, int *exp_idx);
 
 /* file-stats.c */
 int path_findr(state_of_shell *vars);
@@ -63,6 +71,10 @@ size_t _strcpy(char *dest, char *src);
 char *_strcat(char *dest, char *src);
 char *_itoa(size_t *num);
 int _strcmp(char *s1, char *s2);
+
+/* string-utils2.c */
+ssize_t _atoi(char *s);
+void _strdup(char *dest, char *src);
 
 /* write_funcs.c */
 size_t _puts(char *s, int fd);

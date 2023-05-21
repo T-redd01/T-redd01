@@ -52,8 +52,14 @@ char *_itoa(size_t *num)
 	char *dig;
 
 	if (!num)
-		return ("0");
+		return (NULL);
 
+	if (!*num)
+	{
+		dig = malloc(2 * sizeof(char));
+		dig = "0";
+		return (dig);
+	}
 	while (holder)
 	{
 		counter++;

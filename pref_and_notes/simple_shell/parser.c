@@ -31,6 +31,35 @@ void sep_args(state_of_shell *vars, int word_idx, int arg_index)
 	vars->args[arg_index][i] = '\0';
 }
 
+void exp_parser(state_of_shell *vars)
+{
+	int i, j;
+	char **cp_args = vars->args;
+	char *holder = NULL;
+
+	for (i = 0; cp_args[i]; i++)
+	{
+		for (j = 0; cp_args[i][j]; j++)
+		{
+			switch (cp_args[i][j])
+			{
+			case '$':
+				var_exp(&holder, vars, i, &j);
+				break;
+			case '.':
+				break;
+			case '#':
+				break;
+			default:
+				break;
+			}
+			if (cp_args[i][j] == '\0')
+				j--;
+		}
+		printf("holder: %s\n", holder);
+	}
+}
+
 void input_parser(state_of_shell *vars)
 {
 	char *tmp = vars->inpbuf;
@@ -57,4 +86,5 @@ void input_parser(state_of_shell *vars)
 		i++;
 	}
 	vars->args[args_idx] = NULL;
+	exp_parser(vars);
 }
