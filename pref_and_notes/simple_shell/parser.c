@@ -8,6 +8,8 @@ int num_of_words(char *s)
 	{
 		if (s[i] != ' ' && s[i] != '\n')
 		{
+			if (s[i - 1] == ' ' && s[i] == '#')
+				break;
 			words++;
 			while (s[i] != ' ' && s[i] != '\0' && s[i] != '\n')
 				i++;
@@ -47,8 +49,6 @@ void exp_parser(state_of_shell *vars)
 			case '$':
 				tmp = var_exp(vars, i, &j);
 				break;
-			case '#':
-				break;
 			default:
 				holder[hold_idx++] = vars->args[i][j];
 				break;
@@ -69,10 +69,7 @@ void exp_parser(state_of_shell *vars)
 		}
 		free(vars->args[i]);
 		holder[hold_idx] = '\0';
-		vars->args[i] = malloc(hold_idx * sizeof(char));
-		for (k = 0; holder[k]; k++)
-			vars->args[i][k] = holder[k];
-		vars->args[i][k] = '\0';
+		vars->args[i] = _strdup(holder);
 	}
 }
 
@@ -87,6 +84,8 @@ void input_parser(state_of_shell *vars)
 	{
 		if (tmp[i] != ' ' && tmp[i] != '\n')
 		{
+			if (tmp[i - 1] == ' ' && tmp[i] == '#')
+				break;
 			word_len = 0;
 			idx_point = i;
 			while (tmp[i] != ' ' && tmp[i] != '\0' && tmp[i] != '\n')
@@ -102,5 +101,5 @@ void input_parser(state_of_shell *vars)
 		i++;
 	}
 	vars->args[args_idx] = NULL;
-	/*exp_parser(vars);*/
+	exp_parser(vars);
 }

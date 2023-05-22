@@ -9,14 +9,15 @@ void free_state_args(char **args)
 		free(args[i]);
 	}
 	free(args);
-	args = NULL;
 }
 
 void free_repl(state_of_shell *vars)
 {
 	if (vars->args)
+	{
 		free_state_args(vars->args);
-
+		vars->args = NULL;
+	}
 	if (vars->cmd)
 	{
 		free(vars->cmd);

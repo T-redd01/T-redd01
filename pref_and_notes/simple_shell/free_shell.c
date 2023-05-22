@@ -15,5 +15,7 @@ void free_all(state_of_shell *vars)
 	}
 
 	if (vars->path_env)
+	{
 		free_path_list(&(vars->path_env));
+	}
 }

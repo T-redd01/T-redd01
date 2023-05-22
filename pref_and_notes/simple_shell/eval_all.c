@@ -19,10 +19,12 @@ void cmd_list_handle(state_of_shell *vars, size_t cmds)
 	free(num);
 }
 
-int eval_inp(state_of_shell *vars, __attribute__((unused)) size_t cmds)
+int eval_inp(state_of_shell *vars, size_t cmds)
 {
 	int path_exists, builtin_found;
 
+	if (vars->inpbuf[0] == '#')
+		return (-1);
 	input_parser(vars);
 	cmd_list_handle(vars, cmds);
 
