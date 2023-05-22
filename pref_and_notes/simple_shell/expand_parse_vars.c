@@ -1,28 +1,37 @@
 #include "main.h"
 
-int var_exp(char **holder, state_of_shell *vars, int arg_idx, int *exp_idx)
+char *var_exp(state_of_shell *vars, int arg_idx, int *exp_idx)
 {
-	size_t num = errno;
-	char *exp, *some;
+	size_t num, i = 0;
+	char *exp, env_var[2048];
 
 	*exp_idx += 1;
 	if (vars->args[arg_idx][*exp_idx] == '?')
 	{
-		if (*holder == NULL)
-		{
-			*holder = _itoa(&num);
-		}
-		else
-		{
-			exp = _itoa(&num);
-			some = malloc(_strlen(exp) + _strlen(*holder) + 1);
-			_strcpy(some, *holder);
-			_strcat(some, exp);
-			free(*holder);
-			*holder = malloc((_strlen(some) + 1));
-			_strcpy(*holder, some);
-		}
-		/*free(exp);*/
+		num = errno;
+		exp = _itoa(&num);
+		return (exp);
 	}
-	return (1);
+	else if (vars->args[arg_idx][*exp_idx] == '$')
+	{
+		num = getpid();
+		exp = _itoa(&num);
+		return (exp);
+	}
+	else if (vars->args[arg_idx][*exp_idx] == '\0')
+	{
+		exp = malloc(2);
+		exp[0] = '$';
+		exp[1] = '\0';
+		return (exp);
+	}
+
+	while (vars->args[arg_idx][*exp_idx])
+	{
+		env_var[i++] = vars->args[arg_idx][*exp_idx];
+		*exp_idx += 1;
+	}
+	env_var[i] = '\0';
+	exp = _strdup(_getenv(env_var));
+	return (exp);
 }

@@ -26,14 +26,17 @@ ssize_t _atoi(char *s)
 	return (num);
 }
 
-void _strdup(char *dest, char *src)
+char *_strdup(char *src)
 {
 	int i;
+	char *dest;
 
 	if (!src)
-		return;
+		return (NULL);
+
 	dest = malloc((_strlen(src) + 1) * sizeof(char));
 	for (i = 0; src[i]; i++)
 		dest[i] = src[i];
 	dest[i] = '\0';
+	return (dest);
 }

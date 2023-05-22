@@ -31,7 +31,7 @@ char *_strcat(char *dest, char *src)
 {
 	size_t i, j;
 
-	if (!dest || !src)
+	if (!src || !dest)
 		return (NULL);
 
 	for (i = 0; dest[i]; i++)
@@ -57,7 +57,8 @@ char *_itoa(size_t *num)
 	if (!*num)
 	{
 		dig = malloc(2 * sizeof(char));
-		dig = "0";
+		dig[0] = '0';
+		dig[1] = '\0';
 		return (dig);
 	}
 	while (holder)

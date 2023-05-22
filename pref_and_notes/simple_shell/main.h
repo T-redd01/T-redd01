@@ -60,7 +60,7 @@ void sep_args(state_of_shell *vars, int word_idx, int arg_index);
 void input_parser(state_of_shell *vars);
 
 /* expand_parse_vars.c */
-int var_exp(char **holder, state_of_shell *vars, int arg_idx, int *exp_idx);
+char *var_exp(state_of_shell *vars, int arg_idx, int *exp_idx);
 
 /* file-stats.c */
 int path_findr(state_of_shell *vars);
@@ -74,7 +74,7 @@ int _strcmp(char *s1, char *s2);
 
 /* string-utils2.c */
 ssize_t _atoi(char *s);
-void _strdup(char *dest, char *src);
+char *_strdup(char *src);
 
 /* write_funcs.c */
 size_t _puts(char *s, int fd);
