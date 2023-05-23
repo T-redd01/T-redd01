@@ -30,6 +30,7 @@ int path_findr(state_of_shell *vars)
 
 	if (!stat(vars->args[0], &statbuf))
 	{
+		printf("entered if\n");
 		vars->cmd = _strdup(vars->args[0]);
 		return (0);
 	}

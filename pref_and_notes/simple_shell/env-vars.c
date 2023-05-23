@@ -8,7 +8,7 @@ char *_getenv(char *env_var)
 	for (i = 0; environ[i]; i++)
 	{
 		j = 0;
-		while (environ[i][j] != '=')
+		while (environ[i][j] != '=' || env_var[j] != '\0')
 		{
 			if (environ[i][j] != env_var[j])
 			{
