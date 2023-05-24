@@ -44,24 +44,18 @@ void exp_parser(state_of_shell *vars)
 		hold_idx = 0;
 		for (j = 0; cp_args[i][j]; j++)
 		{
-			switch (cp_args[i][j])
-			{
-			case '$':
+			if (cp_args[i][j] == '$')
 				tmp = var_exp(vars, i, &j);
-				break;
-			default:
+			else
 				holder[hold_idx++] = vars->args[i][j];
-				break;
-			}
+
 			if (cp_args[i][j] == '\0')
 				j--;
 
 			if (tmp)
 			{
 				for (k = 0; tmp[k]; k++, hold_idx++)
-				{
 					holder[hold_idx] = tmp[k];
-				}
 				holder[hold_idx] = '\0';
 				free(tmp);
 				tmp = NULL;

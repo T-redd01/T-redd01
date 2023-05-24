@@ -40,3 +40,23 @@ char *_strdup(char *src)
 	dest[i] = '\0';
 	return (dest);
 }
+
+int _strcmp_setenv(char *s1, char *s2)
+{
+	int i, ret = 0;
+
+	for (i = 0; s2[i]; i++)
+	{
+		if (s1[i] == s2[i])
+			ret = 1;
+		else
+			return (0);
+
+		if (s1[i] == '=' && s2[i] != '\0')
+			return (0);
+
+		if (s1[i] != '=' && s2[i] == '\0')
+			return (0);
+	}
+	return (ret);
+}

@@ -20,6 +20,13 @@ char *var_exp(state_of_shell *vars, int arg_idx, int *exp_idx)
 		exp = _itoa(&num);
 		return (exp);
 	}
+	else if (varI == '\0')
+	{
+		exp = malloc(2);
+		exp[0] = '$';
+		exp[1] = '\0';
+		return (exp);
+	}
 	else
 	{
 		while (vars->args[arg_idx][*exp_idx])

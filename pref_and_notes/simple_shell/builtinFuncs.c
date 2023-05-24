@@ -37,3 +37,56 @@ int change_directory(state_of_shell *vars)
 	}
 	return (1);
 }
+
+int _setenv(state_of_shell *vars)
+{
+	int i, flag = 0, idx = -1;
+	char **holder;
+
+	if ((err_setenv(vars->args)))
+		return (1);
+
+	holder = malloc((matrix_counter(environ) + 1) * sizeof(char *));
+	for (i = 0; environ[i]; i++)
+	{
+		if ((flag = _strcmp_setenv(environ[i], vars->args[1])))
+			idx = i;
+		holder[i] = _strdup(environ[i]);
+	}
+	holder[i] = NULL;
+
+	free_environ();
+	if (idx != -1)
+		environ = malloc((matrix_counter(holder) + 1) * sizeof(char *));
+	else
+		environ = malloc((matrix_counter(holder) + 2) * sizeof(char *));
+	for (i = 0; holder[i]; i++)
+	{
+		if (i == idx)
+		{
+			environ[i] = add_env(vars->args[1], vars->args[2]);
+			continue;
+		}
+		environ[i] = _strdup(holder[i]);
+	}
+	if (idx == -1)
+		environ[i++] = add_env(vars->args[1], vars->args[2]);
+	environ[i] = NULL;
+
+	for (i = 0; holder[i]; i++)
+		free(holder[i]);
+	free(holder);
+	return (1);
+}
+
+int print_env(__attribute__((unused)) state_of_shell *vars)
+{
+	size_t i;
+
+	for (i = 0; environ[i]; i++)
+	{
+		_puts(environ[i], 1);
+		_puts("\n", 1);
+	}
+	return (1);
+}

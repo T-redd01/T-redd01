@@ -52,6 +52,8 @@ int built_in_findr(state_of_shell *vars);
 /* builtinFuncs.c */
 int exit_shell(state_of_shell *vars);
 int change_directory(state_of_shell *vars);
+int _setenv(state_of_shell *vars);
+int print_env(state_of_shell *vars);
 
 /* parser.c */
 void exp_parser(state_of_shell *vars);
@@ -75,6 +77,7 @@ int _strcmp(char *s1, char *s2);
 /* string-utils2.c */
 ssize_t _atoi(char *s);
 char *_strdup(char *src);
+int _strcmp_setenv(char *s1, char *s2);
 
 /* write_funcs.c */
 size_t _puts(char *s, int fd);
@@ -87,6 +90,9 @@ void free_path_list(path_list **h);
 
 /* env-vars.c */
 char *_getenv(char *env_var);
+size_t matrix_counter(char **matrix);
+char *add_env(char *name, char *value);
+int err_setenv(char **args);
 
 /* cmd_exec.c */
 int execute_cmd(state_of_shell *vars);
@@ -97,5 +103,6 @@ void free_state_args(char **args);
 
 /* free_shell.c */
 void free_all(state_of_shell *vars);
+void free_environ(void);
 
 #endif

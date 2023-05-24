@@ -6,8 +6,9 @@ int built_in_findr(state_of_shell *vars)
 
 	builtin my_cmds[] = {
 		{"exit", exit_shell},
-		/*{"env"},*/
+		{"env", print_env},
 		{"cd", change_directory},
+		{"setenv", _setenv},
 		{"\0", NULL},
 	};
 
