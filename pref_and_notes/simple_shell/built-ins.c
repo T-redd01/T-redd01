@@ -1,5 +1,15 @@
 #include "main.h"
 
+void change_dir_env(void)
+{
+	char *tmp = _strdup(_getenv("PWD"));
+	char curr[2048];
+
+	_setenv("OLDPWD", tmp);
+	_setenv("PWD", getcwd(curr, 2048));
+	free(tmp);
+}
+
 int built_in_findr(state_of_shell *vars)
 {
 	int i, match;
@@ -8,7 +18,7 @@ int built_in_findr(state_of_shell *vars)
 		{"exit", exit_shell},
 		{"env", print_env},
 		{"cd", change_directory},
-		{"setenv", _setenv},
+		{"setenv", call_setenv},
 		{"\0", NULL},
 	};
 

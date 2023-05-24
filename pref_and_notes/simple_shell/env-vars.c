@@ -72,3 +72,41 @@ int err_setenv(char **args)
 	}
 	return (0);
 }
+
+int _setenv(char *name, char *value)
+{
+	int i, flag = 0, idx = -1;
+	char **holder;
+
+	holder = malloc((matrix_counter(environ) + 1) * sizeof(char *));
+	for (i = 0; environ[i]; i++)
+	{
+		if ((flag = _strcmp_setenv(environ[i], name)))
+			idx = i;
+		holder[i] = _strdup(environ[i]);
+	}
+	holder[i] = NULL;
+
+	free_environ();
+	if (idx != -1)
+		environ = malloc((matrix_counter(holder) + 1) * sizeof(char *));
+	else
+		environ = malloc((matrix_counter(holder) + 2) * sizeof(char *));
+	for (i = 0; holder[i]; i++)
+	{
+		if (i == idx)
+		{
+			environ[i] = add_env(name, value);
+			continue;
+		}
+		environ[i] = _strdup(holder[i]);
+	}
+	if (idx == -1)
+		environ[i++] = add_env(name, value);
+	environ[i] = NULL;
+
+	for (i = 0; holder[i]; i++)
+		free(holder[i]);
+	free(holder);
+	return (1);
+}

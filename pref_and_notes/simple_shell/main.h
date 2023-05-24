@@ -47,12 +47,13 @@ int eval_inp(state_of_shell *vars, size_t cmds);
 void cmd_list_handle(state_of_shell *vars, size_t cmds);
 
 /* built-ins.c */
+void change_dir_env(void);
 int built_in_findr(state_of_shell *vars);
 
 /* builtinFuncs.c */
 int exit_shell(state_of_shell *vars);
 int change_directory(state_of_shell *vars);
-int _setenv(state_of_shell *vars);
+int call_setenv(state_of_shell *vars);
 int print_env(state_of_shell *vars);
 
 /* parser.c */
@@ -93,6 +94,7 @@ char *_getenv(char *env_var);
 size_t matrix_counter(char **matrix);
 char *add_env(char *name, char *value);
 int err_setenv(char **args);
+int _setenv(char *name, char *value);
 
 /* cmd_exec.c */
 int execute_cmd(state_of_shell *vars);
