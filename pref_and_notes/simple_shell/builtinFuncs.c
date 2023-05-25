@@ -87,6 +87,11 @@ int _unsetenv(state_of_shell *vars)
 			return (1);
 		}
 	}
+	if (i < 2)
+	{
+		_puts("Too few arguments\n", 2);
+		return (1);
+	}
 
 	holder = malloc(matrix_counter(environ) * sizeof(char *));
 	for (i = 0; environ[i]; i++)

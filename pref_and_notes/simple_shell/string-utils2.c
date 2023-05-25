@@ -45,6 +45,9 @@ int _strcmp_setenv(char *s1, char *s2)
 {
 	int i, ret = 0;
 
+	if (s1 == NULL || s2 == NULL)
+		return (0);
+
 	for (i = 0; s2[i]; i++)
 	{
 		if (s1[i] == s2[i])
