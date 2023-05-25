@@ -75,7 +75,7 @@ int print_env(__attribute__((unused)) state_of_shell *vars)
 
 int _unsetenv(state_of_shell *vars)
 {
-	int i = 0;
+	int i = 0, j = 0, flag = 0;
 	char **holder;
 
 	while (vars->args[i])
@@ -89,5 +89,31 @@ int _unsetenv(state_of_shell *vars)
 	}
 
 	holder = malloc(matrix_counter(environ) * sizeof(char *));
-	for (i =)
+	for (i = 0; environ[i]; i++)
+	{
+		if ((_strcmp_setenv(environ[i], vars->args[1])))
+		{
+			flag = 1;
+			continue;
+		}
+		holder[j++] = _strdup(environ[i]);
+	}
+	holder[j] = NULL;
+
+	if (!flag)
+	{
+		_puts("Variable not found\n", 2);
+		free_state_args(holder);
+		return (1);
+	}
+	free_state_args(environ);
+	environ = malloc((matrix_counter(holder) + 1) * sizeof(char *));
+	for (i = 0; holder[i]; i++)
+	{
+		environ[i] = _strdup(holder[i]);
+		free(holder[i]);
+	}
+	environ[i] = NULL;
+	free(holder);
+	return (1);
 }

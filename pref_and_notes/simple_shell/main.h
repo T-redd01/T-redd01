@@ -55,6 +55,7 @@ int exit_shell(state_of_shell *vars);
 int change_directory(state_of_shell *vars);
 int call_setenv(state_of_shell *vars);
 int print_env(state_of_shell *vars);
+int _unsetenv(state_of_shell *vars);
 
 /* parser.c */
 void exp_parser(state_of_shell *vars);

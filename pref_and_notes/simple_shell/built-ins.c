@@ -19,6 +19,7 @@ int built_in_findr(state_of_shell *vars)
 		{"env", print_env},
 		{"cd", change_directory},
 		{"setenv", call_setenv},
+		{"unsetenv", _unsetenv},
 		{"\0", NULL},
 	};
 
