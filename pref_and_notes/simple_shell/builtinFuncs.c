@@ -73,4 +73,21 @@ int print_env(__attribute__((unused)) state_of_shell *vars)
 	return (1);
 }
 
-int _unsetenv(state_of_shell *vars);
+int _unsetenv(state_of_shell *vars)
+{
+	int i = 0;
+	char **holder;
+
+	while (vars->args[i])
+	{
+		i++;
+		if (i > 2)
+		{
+			_puts("Usage: unsetenv [NAME]\n", 2);
+			return (1);
+		}
+	}
+
+	holder = malloc(matrix_counter(environ) * sizeof(char *));
+	for (i =)
+}
