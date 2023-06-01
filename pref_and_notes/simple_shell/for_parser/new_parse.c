@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/types.h>
-#include <unistd.h>
 
 size_t _strlen(char *s)
 {
@@ -9,34 +7,24 @@ size_t _strlen(char *s)
 
 	if (!s)
 		return (0);
-
-	while (s[len])
-		len++;
-	return (len);
+	while (s[len++])
+		;
+	return (len - 1);
 }
 
 char *_strdup(char *src)
 {
-	char *new;
-	int i = 0;
+	int i;
+	char *dest;
 
 	if (!src)
 		return (NULL);
 
-	new = malloc((_strlen(src) + 1) * sizeof(char));
-	if (new == NULL)
-	{
-		perror("_strdup");
-		return (NULL);
-	}
-
-	while (src[i])
-	{
-		new[i] = src[i];
-		i++;
-	}
-	new[i] = '\0';
-	return (new);
+	dest = malloc((_strlen(src) + 1) * sizeof(char));
+	for (i = 0; src[i]; i++)
+		dest[i] = src[i];
+	dest[i] = '\0';
+	return (dest);
 }
 
 typedef struct testing
@@ -44,131 +32,136 @@ typedef struct testing
 	char **args;
 } my_args;
 
-size_t word_counter(char *s)
+typedef struct word_args
 {
-	size_t words = 0, i;
+	char *arg;
+	struct word_args *n;
+} arg_list;
 
-	for (i = 0; s[i]; i++)
+arg_list *create_arg_node(char *s)
+{
+	arg_list *new = NULL;
+
+	if (!s)
+		return (NULL);
+
+	new = malloc(sizeof(arg_list));
+	if (!new)
+		return (NULL);
+
+	new->arg = _strdup(s);
+	new->n = NULL;
+	return (new);
+}
+
+arg_list *add_arg_node_end(arg_list **h, arg_list *node)
+{
+	arg_list *tmp = *h;
+
+	if (!node)
+		return (NULL);
+
+	if (*h == NULL)
 	{
-		if (s[i] == '#')
-			break;
-		if (s[i] != ' ' && s[i] != '\n' && s[i])
+		*h = node;
+		return (node);
+	}
+
+	while (tmp->n)
+		tmp = tmp->n;
+	tmp->n = node;
+	return (node);
+}
+
+size_t count_arg_nodes(arg_list *h)
+{
+	size_t num = 0;
+
+	while (h)
+	{
+		num++;
+		h = h->n;
+	}
+	return (num);
+}
+
+void print_arg_list(arg_list *h)
+{
+	int i = 0;
+	while (h)
+	{
+		i++;
+		printf("node %d: %s\n", i, h->arg);
+		h = h->n;
+	}
+}
+
+int word_counter(char *s)
+{
+	int words = 0, i = 0;
+
+	while (s[i])
+	{
+		if (s[i] != ' ' && s[i] != '\n')
 		{
 			words++;
-			while (s[i] != ' ' && s[i])
+			while (s[i] != ' ' && s[i] != '\0' && s[i] != '\n')
 				i++;
 			i--;
 		}
-		if (s[i] == '\0')
-			i--;
+		i++;
 	}
 	return (words);
 }
 
-char *var_exp(char *inp, size_t *inp_idx)
+char **word_seperator(char *inp)
 {
-	size_t i = 0;
-	char *exp;
+	size_t i = 0, tmp, len, matrix_ind = 0, j;
+	char **matrix;
 
-	if (inp[*inp_idx + 1] == '?')
-	{
-		exp = _strdup("errno:0");
-		*inp_idx += 1;
-	}
-	else if (inp[*inp_idx + 1] == '$')
-	{
-		*inp_idx += 1;
-		exp = _strdup("pid:1234");
-	}
-	else if (inp[*inp_idx + 1] == '\0' || inp[*inp_idx + 1] == ' ' || inp[*inp_idx + 1] == '\n')
-	{
-		exp = _strdup("$");
-	}
-	else
-	{
-		exp = _strdup("envar/here");
-		while (inp[*inp_idx + 1] != ' ' && inp[*inp_idx + 1])
-			*inp_idx += 1;
-	}
-	return (exp);
-}
-
-char *arg_adder(char *inp, size_t *idx)
-{
-	size_t len = 0, buf_idx = 0;
-	char *new, buf[4096], *tmp = NULL;
-
-	if (inp[*idx] == '#')
-	{
-		while (inp[*idx])
-			*idx += 1;
+	if (!inp)
 		return (NULL);
-	}
 
-	while (inp[*idx] != ' ' && inp[*idx] != '\n' && inp[*idx])
+	matrix = malloc((word_counter(inp) + 1) * sizeof(char *));
+	while (inp[i])
 	{
-		if (inp[*idx] == '$')
+		if (inp[i] != ' ' && inp[i] != '\n')
 		{
 			len = 0;
-			tmp = var_exp(inp, idx);
-			while (tmp[len])
+			tmp = i;
+			while (inp[tmp] && inp[tmp] != '\n' && inp[tmp] != ' ')
 			{
-				buf[buf_idx++] = tmp[len];
 				len++;
+				tmp++;
 			}
-			if (tmp)
-			{
-				free(tmp);
-				tmp = NULL;
-			}
-		}
-		else
-		{
-			buf[buf_idx++] = inp[*idx];
-		}
-		*idx += 1;
-	}
-	*idx -= 1;
-	buf[buf_idx] = '\0';
-	new = _strdup(buf);
-	return (new);
-}
-
-void parser(my_args *vars, char *inp)
-{
-	size_t i, j = 0;
-	char *arg;
-
-	vars->args = malloc((word_counter(inp) + 1) * sizeof(char *));
-	printf("word_counter: %ld\n", word_counter(inp));
-	for (i = 0; inp[i]; i++)
-	{
-		if (inp[i] != ' ' && inp[i] != '\n' && inp[i])
-		{
-			vars->args[j++] = arg_adder(inp, &i);
-			printf("i: %ld\n", i);
+			matrix[matrix_ind] = malloc((len + 1) * sizeof(char));
+			j = 0;
+			while (inp[i] && inp[i] != '\n' && inp[i] != ' ')
+				matrix[matrix_ind][j++] = inp[i++];
+			matrix[matrix_ind++][j] = '\0';
 		}
 		if (inp[i] == '\0')
-		{
-			printf("inp[i]: (nil)\n");
 			i--;
-		}
-
+		i++;
 	}
-	vars->args[j] = NULL;
+	matrix[matrix_ind] = NULL;
+	return (matrix);
 }
 
 int main(void)
 {
-	int i;
 
-	my_args vars = { NULL };
-	char *input = "ls && ls&&ls ls&ls; ls || ls||ls ls|ls ; echo $$ ; echo $?; echo $$$; echo $; echo $test;echo $PATH; cat#ls ;#ls /home/otto/Pictures";
-	parser(&vars, "echo $$ #$? $$$ $lsls $");
-	for (i = 0; vars.args[i]; i++)
-		printf("%s\n", vars.args[i]);
-	for (i = 0; vars.args[i]; i++)
-		free(vars.args[i]);
-	free(vars.args);
+	/*my_args vars = {NULL};*/
+	int i;
+	char **sep_args;
+	char *input = "ls && ls&&ls ls&ls;ls || ls||ls ls|ls ; echo $$ ; echo $?; echo $$$; echo $; echo $test;echo $PATH; cat#ls ;#ls /home/otto/Pictures";
+
+	sep_args = word_seperator(input);
+	for (i = 0; sep_args[i]; i++)
+	{
+		printf("%s\n", sep_args[i]);
+		free(sep_args[i]);
+	}
+	free(sep_args);
 	return (0);
 }
