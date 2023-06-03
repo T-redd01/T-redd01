@@ -19,14 +19,25 @@ void cmd_list_handle(state_of_shell *vars, size_t cmds)
 	free(num);
 }
 
-int eval_inp(state_of_shell *vars, size_t cmds)
+int eval_inp(state_of_shell *vars, __attribute__((unused)) size_t cmds)
 {
-	int path_exists, builtin_found;
+	/*int path_exists, builtin_found;*/
+	tokens *head = NULL;
+	cmd_buf *start = NULL;
 
-	if (vars->inpbuf[0] == '#')
-		return (-1);
-	input_parser(vars);
-	cmd_list_handle(vars, cmds);
+	printf("Input: %s\n", vars->inpbuf);
+	head = new_list(vars->inpbuf);
+	free(vars->inpbuf);
+	vars->inpbuf = NULL;
+	find_var(&head);
+	printf("\nTokens:\n");
+	print_tokens_list(head);
+	start = create_cmd_buf(&head);
+	printf("\ncmds:\n");
+	print_cmd_list(start);
+	free_tokens_list(head);
+	free_cmd_list(start);
+	/*cmd_list_handle(vars, cmds);
 
 	builtin_found = built_in_findr(vars);
 	if (builtin_found)
@@ -34,6 +45,6 @@ int eval_inp(state_of_shell *vars, size_t cmds)
 
 	path_exists = path_findr(vars);
 	if (!path_exists)
-		execute_cmd(vars);
+		execute_cmd(vars);*/
 	return (0);
 }

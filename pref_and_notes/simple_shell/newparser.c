@@ -1,43 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-
-extern int errno;
-
-typedef struct token_list
-{
-	char *token;
-	struct token_list *n;
-} tokens;
-
-typedef struct cmd_list
-{
-	char **args;
-	char chain_symbol;
-	struct cmd_list *n_cmd;
-} cmd_buf;
-
-char *_strdup(char *src)
-{
-	size_t len = 0;
-	char *new;
-
-	if (!src)
-		return (NULL);
-
-	while (src[len])
-		len++;
-
-	new = malloc((len + 1) * sizeof(char));
-	if (new == NULL)
-		return (NULL);
-	for (len = 0; src[len]; len++)
-		new[len] = src[len];
-	new[len] = '\0';
-	return (new);
-}
+#include "main.h"
 
 tokens *add_tokens_node_end(tokens **head, char *src)
 {
@@ -403,34 +364,4 @@ void free_cmd_list(cmd_buf *h)
 		free(h);
 		h = tmp;
 	}
-}
-
-int main(void)
-{
-	char *inp = "&&&& alias $=ls; echo $? && echo $$ || cat nil ||||";
-	tokens *head = NULL;
-	cmd_buf *start = NULL;
-
-	head = new_list(inp);
-	printf("Before tokens:\n");
-	print_tokens_list(head);
-
-	find_var(&head);
-	printf("\nAfter tokens:\n");
-	print_tokens_list(head);
-
-	start = create_cmd_buf(&head);
-	printf("\nBefore cmd_list:\n");
-	print_cmd_list(start);
-
-	free_cmd_list(start);
-	start = NULL;
-	printf("\nFreed cmd_list:\n");
-	print_cmd_list(start);
-
-	free_tokens_list(head);
-	head = NULL;
-	printf("\nFreed tokens:\n");
-	print_tokens_list(head);
-	return (0);
 }

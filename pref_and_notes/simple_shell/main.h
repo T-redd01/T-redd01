@@ -21,6 +21,19 @@ typedef struct all_path
 	struct all_path *next;
 } path_list;
 
+typedef struct token_list
+{
+	char *token;
+	struct token_list *n;
+} tokens;
+
+typedef struct cmd_list
+{
+	char **args;
+	char chain_symbol;
+	struct cmd_list *n_cmd;
+} cmd_buf;
+
 typedef struct holder
 {
 	char *prog_name;
@@ -57,11 +70,28 @@ int call_setenv(state_of_shell *vars);
 int print_env(state_of_shell *vars);
 int _unsetenv(state_of_shell *vars);
 
+/*******************************work on parser here******************/
 /* parser.c */
 void exp_parser(state_of_shell *vars);
 int num_of_words(char *s);
 void sep_args(state_of_shell *vars, int word_idx, int arg_index);
 void input_parser(state_of_shell *vars);
+
+/* newparser.c */
+tokens *add_tokens_node_end(tokens **head, char *src);
+void print_tokens_list(tokens *h);
+void free_tokens_list(tokens *h);
+int find_delim(char *inp, size_t idx);
+tokens *new_list(char *inp);
+void remove_node(tokens **h, int idx);
+char *exp_var(char *s);
+void find_var(tokens **head);
+cmd_buf *create_cmd_buf_node(tokens *arg_strt, size_t arg_count);
+cmd_buf *append_cmd_buf_node(cmd_buf **head, cmd_buf *node);
+cmd_buf *create_cmd_buf(tokens **h);
+void print_cmd_list(cmd_buf *h);
+void free_cmd_list(cmd_buf *h);
+/*******************************work on parser here******************/
 
 /* expand_parse_vars.c */
 char *var_exp(state_of_shell *vars, int arg_idx, int *exp_idx);
