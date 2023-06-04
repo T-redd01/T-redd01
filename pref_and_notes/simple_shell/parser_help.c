@@ -1,5 +1,5 @@
 #include "main.h"
-
+/*
 #define varI vars->args[arg_idx][*exp_idx]
 
 char *var_exp(state_of_shell *vars, int arg_idx, int *exp_idx)
@@ -39,3 +39,4 @@ char *var_exp(state_of_shell *vars, int arg_idx, int *exp_idx)
 		return (exp);
 	}
 }
+*/

@@ -10,7 +10,7 @@ void change_dir_env(void)
 	free(tmp);
 }
 
-int built_in_findr(state_of_shell *vars)
+int built_in_findr(char **vect, char *err_str)
 {
 	int i, match;
 
@@ -25,10 +25,10 @@ int built_in_findr(state_of_shell *vars)
 
 	for (i = 0; my_cmds[i].builtin_name[0]; i++)
 	{
-		match = _strcmp(my_cmds[i].builtin_name, vars->args[0]);
+		match = _strcmp(my_cmds[i].builtin_name, vect[0]);
 		if (match)
 		{
-			return (my_cmds[i].func_ptr(vars));
+			return (my_cmds[i].func_ptr(vect, err_str));
 		}
 	}
 	return (0);

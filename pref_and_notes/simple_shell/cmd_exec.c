@@ -1,6 +1,6 @@
 #include "main.h"
 
-int execute_cmd(state_of_shell *vars)
+int execute_cmd(state_of_shell *vars, char **vect)
 {
 	pid_t child_proc;
 	int wstatus;
@@ -8,7 +8,7 @@ int execute_cmd(state_of_shell *vars)
 	child_proc = fork();
 	if (child_proc == 0)
 	{
-		execve(vars->cmd, vars->args, environ);
+		execve(vars->cmd, vect, environ);
 	}
 	else
 	{

@@ -39,15 +39,16 @@ typedef struct holder
 	char *prog_name;
 	char *err_prmpt;
 	char *inpbuf;
-	char **args;
 	char *cmd;
+	char **args;
 	path_list *path_env;
+	cmd_buf *all_cmds;
 } state_of_shell;
 
 typedef struct all_builtins
 {
 	char *builtin_name;
-	int (*func_ptr)(state_of_shell *);
+	int (*func_ptr)(char **vect, char *err_str);
 } builtin;
 
 /* repl_loop.c */
@@ -57,18 +58,18 @@ void sighandler(int sig);
 
 /* eval_all.c */
 int eval_inp(state_of_shell *vars, size_t cmds);
-void cmd_list_handle(state_of_shell *vars, size_t cmds);
+void cmd_list_handle(state_of_shell *vars, size_t cmds, cmd_buf *h);
 
 /* built-ins.c */
 void change_dir_env(void);
-int built_in_findr(state_of_shell *vars);
+int built_in_findr(char **vect, char *err_str);
 
 /* builtinFuncs.c */
-int exit_shell(state_of_shell *vars);
-int change_directory(state_of_shell *vars);
-int call_setenv(state_of_shell *vars);
-int print_env(state_of_shell *vars);
-int _unsetenv(state_of_shell *vars);
+int exit_shell(char **vect, char *err_str);
+int change_directory(char **vect, char *err_str);
+int call_setenv(char **vect, char *err_str);
+int print_env(char **vect, char *err_str);
+int _unsetenv(char **vect, char *err_str);
 
 /*******************************work on parser here******************/
 /* parser.c */
@@ -97,7 +98,7 @@ void free_cmd_list(cmd_buf *h);
 char *var_exp(state_of_shell *vars, int arg_idx, int *exp_idx);
 
 /* file-stats.c */
-int path_findr(state_of_shell *vars);
+int path_findr(state_of_shell *vars, char **vect);
 
 /* string-utils.c */
 size_t _strlen(char *s);
@@ -128,7 +129,7 @@ int err_setenv(char **args);
 int _setenv(char *name, char *value);
 
 /* cmd_exec.c */
-int execute_cmd(state_of_shell *vars);
+int execute_cmd(state_of_shell *vars, char **vect);
 
 /* free_replloop.c */
 void free_repl(state_of_shell *vars);

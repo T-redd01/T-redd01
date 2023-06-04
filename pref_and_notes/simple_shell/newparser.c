@@ -185,7 +185,7 @@ char *exp_var(char *s)
 				env[j++] = s[i++];
 			env[j] = '\0';
 			i--;
-			var = _strdup(getenv(env));
+			var = _strdup(_getenv(env));
 			if (var)
 			{
 				j = 0;

@@ -18,7 +18,7 @@ path_list *init_path_list(path_list **h)
 	return (ret);
 }
 
-int path_findr(state_of_shell *vars)
+int path_findr(state_of_shell *vars, char **vect)
 {
 	int file_found;
 	char *test_path, *not_fnd = ": not found\n";
@@ -28,18 +28,18 @@ int path_findr(state_of_shell *vars)
 	if (!vars->path_env)
 		init_path_list(&(vars->path_env));
 
-	if (!stat(vars->args[0], &statbuf))
+	if (!stat(vect[0], &statbuf))
 	{
-		vars->cmd = _strdup(vars->args[0]);
+		vars->cmd = _strdup(vect[0]);
 		return (0);
 	}
 	tmp = vars->path_env;
 	while (tmp)
 	{
-		test_path = malloc((tmp->bin_paths_len + _strlen(vars->args[0]) + 2));
+		test_path = malloc((tmp->bin_paths_len + _strlen(vect[0]) + 2));
 		_strcpy(test_path, tmp->bin_paths);
 		_strcat(test_path, "/");
-		_strcat(test_path, vars->args[0]);
+		_strcat(test_path, vect[0]);
 		file_found = stat(test_path, &statbuf);
 		if (file_found == 0)
 		{

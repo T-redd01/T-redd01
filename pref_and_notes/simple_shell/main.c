@@ -22,7 +22,7 @@ void init_environ(void)
 
 int main(__attribute__((unused)) int ac, char **av)
 {
-	state_of_shell vars = {NULL, NULL, NULL, NULL, NULL, NULL};
+	state_of_shell vars = {NULL, NULL, NULL, NULL, NULL, NULL, NULL};
 
 	vars.prog_name = av[0];
 	init_environ();

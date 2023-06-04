@@ -1,5 +1,5 @@
 #include "main.h"
-
+/*
 int num_of_words(char *s)
 {
 	int words = 0, i = 0;
@@ -97,3 +97,4 @@ void input_parser(state_of_shell *vars)
 	vars->args[args_idx] = NULL;
 	exp_parser(vars);
 }
+*/
