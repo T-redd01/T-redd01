@@ -36,7 +36,7 @@ void repl_loop(state_of_shell *vars)
 		if (retval == -1)
 		{
 			if (isatty(STDIN_FILENO))
-				write(STDOUT_FILENO, "\n", 1);
+				_puts("\n", 1);
 			free_all(vars);
 			exit(errno);
 		}

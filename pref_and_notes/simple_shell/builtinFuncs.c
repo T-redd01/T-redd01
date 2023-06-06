@@ -1,6 +1,6 @@
 #include "main.h"
 
-int exit_shell(char **vect, char *err_str)
+int exit_shell(char **vect, state_of_shell *vars)
 {
 	ssize_t _status;
 	char *err_msg = ": Illegal number: ";
@@ -13,19 +13,20 @@ int exit_shell(char **vect, char *err_str)
 
 	if (_status < 0)
 	{
-		_puts(err_str, 2);
+		_puts(vars->err_prmpt, 2);
 		_puts(err_msg, 2);
 		_puts(vect[1], 2);
 		_puts("\n", 2);
 		errno = 2;
 		return (-1);
 	}
-	/*free_all(vars);
-	free_repl(vars);*/
+	free_all(vars);
+	free_repl(vars);
+	free_cmd_list(vars->all_cmds);
 	exit(_status);
 }
 
-int change_directory(char **vect, char *err_str)
+int change_directory(char **vect, state_of_shell *vars)
 {
 	char *err_msg = ": can't cd to ";
 	char *to_cd;
@@ -43,7 +44,7 @@ int change_directory(char **vect, char *err_str)
 
 	if (chdir(to_cd) == -1)
 	{
-		_puts(err_str, 2);
+		_puts(vars->err_prmpt, 2);
 		_puts(err_msg, 2);
 		_puts(vect[1], 2);
 		_puts("\n", 2);
@@ -53,7 +54,7 @@ int change_directory(char **vect, char *err_str)
 	return (1);
 }
 
-int call_setenv(char **vect, __attribute__((unused)) char *err_str)
+int call_setenv(char **vect, __attribute__((unused)) state_of_shell *vars)
 {
 	if ((err_setenv(vect)))
 		return (1);
@@ -61,7 +62,7 @@ int call_setenv(char **vect, __attribute__((unused)) char *err_str)
 	return ((_setenv(vect[1], vect[2])));
 }
 
-int print_env(__attribute__((unused)) char **vect, __attribute__((unused)) char *err_str)
+int print_env(__attribute__((unused)) char **vect, __attribute__((unused)) state_of_shell *vars)
 {
 	size_t i;
 
@@ -73,7 +74,7 @@ int print_env(__attribute__((unused)) char **vect, __attribute__((unused)) char 
 	return (1);
 }
 
-int _unsetenv(char **vect, __attribute__((unused)) char *err_str)
+int _unsetenv(char **vect, __attribute__((unused)) state_of_shell *vars)
 {
 	int i = 0, j = 0, flag = 0;
 	char **holder;

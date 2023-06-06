@@ -10,7 +10,7 @@ void change_dir_env(void)
 	free(tmp);
 }
 
-int built_in_findr(char **vect, char *err_str)
+int built_in_findr(char **vect, state_of_shell *vars)
 {
 	int i, match;
 
@@ -28,7 +28,7 @@ int built_in_findr(char **vect, char *err_str)
 		match = _strcmp(my_cmds[i].builtin_name, vect[0]);
 		if (match)
 		{
-			return (my_cmds[i].func_ptr(vect, err_str));
+			return (my_cmds[i].func_ptr(vect, vars));
 		}
 	}
 	return (0);

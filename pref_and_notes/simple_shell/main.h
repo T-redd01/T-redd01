@@ -40,7 +40,6 @@ typedef struct holder
 	char *err_prmpt;
 	char *inpbuf;
 	char *cmd;
-	char **args;
 	path_list *path_env;
 	cmd_buf *all_cmds;
 } state_of_shell;
@@ -48,7 +47,7 @@ typedef struct holder
 typedef struct all_builtins
 {
 	char *builtin_name;
-	int (*func_ptr)(char **vect, char *err_str);
+	int (*func_ptr)(char **vect, state_of_shell *vars);
 } builtin;
 
 /* repl_loop.c */
@@ -62,14 +61,14 @@ void cmd_list_handle(state_of_shell *vars, size_t cmds, cmd_buf *h);
 
 /* built-ins.c */
 void change_dir_env(void);
-int built_in_findr(char **vect, char *err_str);
+int built_in_findr(char **vect, state_of_shell *vars);
 
 /* builtinFuncs.c */
-int exit_shell(char **vect, char *err_str);
-int change_directory(char **vect, char *err_str);
-int call_setenv(char **vect, char *err_str);
-int print_env(char **vect, char *err_str);
-int _unsetenv(char **vect, char *err_str);
+int exit_shell(char **vect, state_of_shell *vars);
+int change_directory(char **vect, state_of_shell *vars);
+int call_setenv(char **vect, state_of_shell *vars);
+int print_env(char **vect, state_of_shell *vars);
+int _unsetenv(char **vect, state_of_shell *vars);
 
 /*******************************work on parser here******************/
 /* parser.c */
