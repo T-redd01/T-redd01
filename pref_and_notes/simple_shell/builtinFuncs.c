@@ -29,13 +29,15 @@ int exit_shell(char **vect, state_of_shell *vars)
 int change_directory(char **vect, state_of_shell *vars)
 {
 	char *err_msg = ": can't cd to ";
-	char *to_cd;
+	char *to_cd = NULL, buf[2048];
 
 	if (vect[1] == NULL)
 		to_cd = _getenv("HOME"); /* oldpwd = pwd , pwd = /home/otto */
 	else if (vect[1][0] == '-' && vect[1][1] == '\0')
 	{
 		to_cd = _getenv("OLDPWD"); /* oldpwd = pwd, pwd = oldpwd */
+		if (!to_cd)
+			to_cd = getcwd(buf, 2048);
 		_puts(to_cd, 1);
 		_puts("\n", 1);
 	}
@@ -77,7 +79,7 @@ int print_env(__attribute__((unused)) char **vect, __attribute__((unused)) state
 int _unsetenv(char **vect, __attribute__((unused)) state_of_shell *vars)
 {
 	int i = 0, j = 0, flag = 0;
-	char **holder;
+	char **holder = NULL;
 
 	while (vect[i])
 	{
@@ -90,19 +92,19 @@ int _unsetenv(char **vect, __attribute__((unused)) state_of_shell *vars)
 	}
 	if (i < 2)
 	{
-		_puts("Too few arguments\n", 2);
+		_puts("Usage: unsetenv [NAME]\n", 2);
 		return (1);
 	}
 
-	holder = malloc(matrix_counter(environ) * sizeof(char *));
-	for (i = 0; environ[i]; i++)
+	holder = malloc((matrix_counter(environ) + 1) * sizeof(char *));
+	for (i = 0; environ[i]; i++, j++)
 	{
 		if ((_strcmp_setenv(environ[i], vect[1])))
 		{
 			flag = 1;
 			continue;
 		}
-		holder[j++] = _strdup(environ[i]);
+		holder[j] = _strdup(environ[i]);
 	}
 	holder[j] = NULL;
 
@@ -112,6 +114,7 @@ int _unsetenv(char **vect, __attribute__((unused)) state_of_shell *vars)
 		free_state_args(holder);
 		return (1);
 	}
+
 	free_state_args(environ);
 	environ = malloc((matrix_counter(holder) + 1) * sizeof(char *));
 	for (i = 0; holder[i]; i++)

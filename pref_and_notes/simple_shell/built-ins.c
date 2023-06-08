@@ -5,6 +5,11 @@ void change_dir_env(void)
 	char *tmp = _strdup(_getenv("PWD"));
 	char curr[2048];
 
+	if (!tmp)
+	{
+		tmp = getcwd(curr, 2048);
+		printf("tmp: %s\n", tmp);
+	}
 	_setenv("OLDPWD", tmp);
 	_setenv("PWD", getcwd(curr, 2048));
 	free(tmp);
@@ -12,7 +17,7 @@ void change_dir_env(void)
 
 int built_in_findr(char **vect, state_of_shell *vars)
 {
-	int i, match;
+	int i, match = 0;
 
 	builtin my_cmds[] = {
 		{"exit", exit_shell},
