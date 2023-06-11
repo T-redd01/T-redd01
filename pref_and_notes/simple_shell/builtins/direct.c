@@ -30,7 +30,8 @@ void reverse_dir(char *curr){
 
 	new = _strdup(_getenv("OLDPWD"));
 	if (!new) {
-		printf("%s\n", curr);
+		_puts(curr, 1);
+		_puts("\n", 1);
 		return;
 	}
 
@@ -39,13 +40,20 @@ void reverse_dir(char *curr){
 		free(new);
 		return;
 	}
-	printf("%s\n", new);
+	_puts(new, 1);
+	_puts("\n", 1);
 	_setenv("PWD", new);
 	_setenv("OLDPWD", curr);
 	free(new);
 }
 
-void _change_WD(char *dest) {
+void cd_err_msg(char *tok) {
+	_puts("Cant't cd to: ", 1);
+	_puts(tok, 1);
+	_puts("\n", 1);
+}
+
+void _change_WD(char **vect) {
         int ch_ret = 0;
         char *path = NULL, *curr = NULL;
 
@@ -53,7 +61,7 @@ void _change_WD(char *dest) {
 		if (!curr)
 			return;
 
-		if (!dest) {
+		if (!vect[1]) {
 			path = _strdup(_getenv("HOME"));
 			if (!path) {
 				free(curr);
@@ -71,15 +79,15 @@ void _change_WD(char *dest) {
 			return;
 		}
 
-		if ((my_strcmp(dest, "-"))) {
+		if ((my_strcmp(vect[1], "-"))) {
 			reverse_dir(curr);
 			free(curr);
 			return;
 		}
 
-		ch_ret = chdir(dest);
+		ch_ret = chdir(vect[1]);
 		if (ch_ret == -1) {
-			printf("Can't cd to: %s\n", dest);
+			cd_err_msg(vect[1]);
 			free(curr);
 			return;
 		}

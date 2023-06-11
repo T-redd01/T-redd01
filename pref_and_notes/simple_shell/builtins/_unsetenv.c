@@ -7,11 +7,6 @@ void _unsetenv(char *name) {
         if (!name)
                 return;
 
-        if (!(_getenv(name))) {
-                printf("Variable not found\n");
-                return;
-        }
-
         holder = malloc(args * sizeof(char *));
         if (!holder) {
                 perror("_unsetenv: holder");
@@ -36,5 +31,27 @@ void _unsetenv(char *name) {
         }
         environ[i] = NULL;
         free(holder);
+}
+
+void call_unsetenv(char **vect) {
+	int args = 0;
+
+	while (vect[args]) {
+		if (args == 3)
+			break;
+		args++;
+	}
+
+	if (args != 2) {
+		_puts("Usage: unsetenv [VARIABLE NAME]\n", 2);
+		return;
+	}
+
+	if (!(_getenv(vect[1]))) {
+		_puts("Variable not found\n", 2);
+		return;
+	}
+
+	_unsetenv(vect[1]);
 }
 

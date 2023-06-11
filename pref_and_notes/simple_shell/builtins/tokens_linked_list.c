@@ -28,11 +28,11 @@ void remove_node(tokens **h, int idx)
 	free(to_rem);
 }
 
-void *append_tokens_node(tokens **head, tokens *node) {
+void append_tokens_node(tokens **head, tokens *node) {
 	tokens *tmp = *head;
 
 	if (!node)
-		return (NULL);
+		return;
 
 	if (*head == NULL) {
 		*head = node;
@@ -42,7 +42,7 @@ void *append_tokens_node(tokens **head, tokens *node) {
 	while (tmp->n)
 		tmp = tmp->n;
 	tmp->n = node;
-	return (node);
+	return;
 }
 
 void print_tokens_list(tokens *h)

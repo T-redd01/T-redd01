@@ -84,3 +84,20 @@ void _setenv(char *name, char *val) {
 	free(holder);
 }
 
+void call_setenv(char **vect) {
+	int args = 0;
+
+	while (vect[args]) {
+		if (args == 4)
+			break;
+		args++;
+	}
+
+	if (args != 3) {
+		_puts("Usage: setenv [VARIABLE NAME] [VARIABLE VALUE]\n", 2);
+		return;
+	}
+
+	_setenv(vect[1], vect[2]);
+}
+

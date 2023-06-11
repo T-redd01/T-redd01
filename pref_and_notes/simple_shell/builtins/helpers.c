@@ -1,40 +1,20 @@
 #include "main.h"
 
-char *_strdup(char *src) {
-	size_t i, len = 0;
-	char *new = NULL;
-
-	if (!src)
-		return (NULL);
-
-	while (src[len])
-		len++;
-
-	new = malloc((len + 1) * sizeof(char));
-	if (!new) {
-		perror("_strdup");
-		return (NULL);
-	}
-
-	for (i = 0; src[i]; i++)
-		new[i] = src[i];
-	new[i] = '\0';
-	return (new);
-}
-
-int my_strcmp(char *s1, char *s2) {
-        size_t i;
-
-        if (!s1 || !s2)
-                return (0);
-
-        for (i = 0; s1[i] && s2[i]; i++) {
-                if (s1[i] != s2[i])
-                        return (0);
-        }
-        if (s1[i] != s2[i])
-                return (0);
+int find_delim(char *inp, size_t idx) {
+    if (inp[idx] == '\0')
         return (1);
+    else if (inp[idx] == ' ')
+        return (1);
+    else if (inp[idx] == ';')
+        return (1);
+    else if (inp[idx] == '&' && inp[idx + 1] == '&')
+        return (1);
+    else if (inp[idx] == '|' && inp[idx + 1] == '|')
+        return (1);
+    else if (inp[idx] == '\n')
+        return (1);
+    else
+        return (0);
 }
 
 size_t matrix_count(char **matrix) {
@@ -69,5 +49,17 @@ void free_matrix(char **matrix) {
 	for (i = 0; matrix[i]; i++)
 		free(matrix[i]);
 	free(matrix);
+}
+
+void _puts(char *str, int fd) {
+	size_t len = 0;
+
+	if (!str)
+		return;
+
+	while (str[len])
+		len++;
+
+	write(fd, str, len);
 }
 
