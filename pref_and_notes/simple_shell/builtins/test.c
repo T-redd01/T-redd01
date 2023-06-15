@@ -15,60 +15,48 @@ void exec_func(char **vect) {
 	}
 }
 
-int main(__attribute__((unused)) int ac, __attribute__((unused)) char **av) {
-	cmds *head = NULL;
-	al_list *als;
+char *call_no(char *prog_name, size_t call) {
+	size_t i, j = 0, len = 0;
+	char *shell_call = NULL, *num = NULL;
 
-	als = malloc(sizeof(al_list));
-	als->name = _strdup("c");
-	als->val = _strdup("clear");
-	als->n_al = NULL;
+	if (!prog_name)
+		return (NULL);
 
-	head = parser(als, "c echo this and that");
-	print_cmds_list(head);
-	puts("\n");
-	free_cmds_list(head);
+	num = _itoa(call);
+	len = _strlen(prog_name) + _strlen(num);
+	shell_call = malloc((len + 5) * sizeof(char));
+	if (!shell_call) {
+		perror("call_no: shell_call");
+		free(num);
+		return (NULL);
+	}
 
-	head = parser(als, "c ls c && ls&& cat &&cat || ls|| cat|| echo $? $$ $_ $; ls ; ls ;cat ; ; && && || ||");
-	print_cmds_list(head);
-	free_cmds_list(head);
-	free_alias_list(als);
+	for (i = 0; prog_name[i]; i++)
+		shell_call[j++] = prog_name[i];
+	shell_call[j++] = ':';
+	shell_call[j++] = ' ';
+	for (i = 0; num[i]; i++)
+		shell_call[j++] = num[i];
+	shell_call[j++] = ':';
+	shell_call[j++] = ' ';
+	shell_call[j] = '\0';
+	free(num);
+	return (shell_call);
+}
 
-	/*exp_tok("$PATH");
-	printf("Expected: %s\n\n", _getenv("PATH"));
+int main(__attribute__((unused)) int ac, char **av) {
+	int fd, r;
+	char buf[1024];
 
-	exp_tok("random$PATH");
-	printf("Expected: random%s\n\n", _getenv("PATH"));
-	
-	exp_tok("random$PATHrandom");
-	printf("Expected: random\n\n");
-
-	exp_tok("$random");
-	printf("Expected: nil\n\n");
-
-	exp_tok("$");
-	printf("Expetedted: $\n\n");
-
-	exp_tok("random$");
-	printf("Expected: random$\n\n");
-
-	exp_tok("$?");
-	printf("Expected: %d\n\n", errno);
-
-	exp_tok("random$?");
-	printf("Expected: random%d\n\n", errno);
-
-	exp_tok("random$?random");
-	printf("Expected: random%drandom\n\n", errno);
-
-	exp_tok("$$");
-	printf("Expected: %d\n\n", getpid());
-
-	exp_tok("random$$");
-	printf("Expected: random%d\n\n", getpid());
-
-	exp_tok("random$$random");
-	printf("Expected: random%drandom\n\n", getpid());*/
+	if (ac == 2) {
+		fd = open(av[1], O_RDONLY);
+		if (fd == -1) {
+			perror("open");
+			return (1);
+		}
+		r = read(fd, buf, 1024);
+		write(1, buf, r);
+	}
 	return (0);
 }
 

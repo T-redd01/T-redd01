@@ -5,9 +5,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <sys/stat.h>
 
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <fcntl.h>
 
 extern char **environ;
 
@@ -102,6 +104,11 @@ char *find_alias(al_list *h, tokens *n);
 cmds *parser(al_list *als, char *input);
 tokens *create_delim_tok(char *input, size_t *idx);
 tokens *create_tok_node(char *inp, size_t idx);
+
+/* find_bin.c */
+int find_bin(cmds *node, char *shell_call);
+char *create_path(char *n, size_t bin_len, char *path, size_t *idx);
+void not_found(char *shell_call, char *name);
 
 #endif
 
