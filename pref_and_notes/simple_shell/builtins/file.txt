@@ -1,2 +1,5 @@
-a sentence is here
+echo $?
+card
+hello
+how are you
 

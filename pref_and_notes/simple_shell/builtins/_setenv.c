@@ -84,7 +84,7 @@ void _setenv(char *name, char *val) {
 	free(holder);
 }
 
-void call_setenv(char **vect) {
+void call_setenv(__attribute__((unused)) cache *mm, char **vect) {
 	int args = 0;
 
 	while (vect[args]) {

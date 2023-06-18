@@ -54,7 +54,7 @@ void print_alias_node(al_list *h, char *key) {
 			_puts("=", 1);
 			_puts("'", 1);
 			_puts(h->val, 1);
-			_puts("'", 1);
+			_puts("'\n", 1);
 			return;
 		}
 		h = h->n_al;
@@ -70,7 +70,7 @@ void print_alias_list(al_list *h) {
 		_puts("=", 1);
 		_puts("'", 1);
 		_puts(h->val, 1);
-		_puts("'", 1);
+		_puts("'\n", 1);
 		h = h->n_al;
 	}
 }

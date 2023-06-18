@@ -31,6 +31,29 @@ typedef struct cmd_vect_list {
 	struct cmd_vect_list *n;
 } cmds;
 
+typedef struct shell_cache {
+	char *calls;
+	al_list *als;
+	cmds *commands;
+} cache;
+
+typedef struct builtin_commands {
+	char *name;
+	void (*p)(cache *mm, char **vect);
+} builtins;
+
+/* repl_loop.c */
+void repl_loop(cache *mm, char *name);
+ssize_t read_inp(char **input);
+void sighandler(int sig);
+
+/* eval_cmds.c */
+void eval_cmds(cache *mm);
+void exec_func(char **vect);
+
+/* builtins.c */
+int builtin_findr(cache *mm, char **vect);
+
 /* helpers.c */
 int find_delim(char *inp, size_t idx);
 size_t matrix_count(char **matrix);
@@ -58,23 +81,24 @@ char *_itoa(size_t num);
 void init_environ(void);
 char *_getenv(char *name);
 int key_cmp(char *key, char *name);
+void print_env(cache *mm, char **vect);
 
 /* _setenv.c */
 char *new_env_var(char *name, char *val);
 void replace_env(char *name, char *val);
 void _setenv(char *name, char *val);
-void call_setenv(char **vect);
+void call_setenv(cache *mm, char **vect);
 
 /* _unsetenv.c */
 void _putchar(char c);
 void _unsetenv(char *name);
-void call_unsetenv(char **vect);
+void call_unsetenv(cache *mm, char **vect);
 
 /* direct.c */
 char *_getCWD(size_t num);
 void update_oldpwd(char *curr);
-void cd_err_msg(char *tok);
-void _change_WD(char **vect);
+void cd_err_msg(char *shell_call, char *tok);
+void _change_WD(cache *mm, char **vect);
 
 /* alias_linked_list.c  */
 void print_alias_list(al_list *h);
@@ -86,11 +110,11 @@ void free_alias_list(al_list *h);
 /* _alias.c  */
 char *extract_alias_val(char *pair);
 char *extract_alias_name(char *pair);
-void _alias(al_list **h, char **vect);
+void _alias(cache *mm, char **vect);
 
 /* shell_exit.c */
-void shell_exit(char **vect);
-void print_exit_err(char *num);
+void shell_exit(cache *mm, char **vect);
+void print_exit_err(char *shell_call, char *num);
 
 /* exp_toks.c */
 tokens *exp_tok(tokens *n);

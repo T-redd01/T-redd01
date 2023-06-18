@@ -37,7 +37,7 @@ void _unsetenv(char *name) {
         free(holder);
 }
 
-void call_unsetenv(char **vect) {
+void call_unsetenv(__attribute__((unused)) cache *mm, char **vect) {
 	int args = 0;
 
 	while (vect[args]) {

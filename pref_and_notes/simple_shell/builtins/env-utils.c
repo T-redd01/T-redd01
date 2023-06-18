@@ -51,3 +51,6 @@ int key_cmp(char *key, char *name) {
 	return (0);
 }
 
+void print_env(__attribute__((unused)) cache *mm, __attribute__((unused)) char **vect) {
+	print_matrix(environ);
+}

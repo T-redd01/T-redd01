@@ -67,7 +67,7 @@ al_list *change_alias_val(al_list *h, char *pair) {
 	return (NULL);
 }
 
-void _alias(al_list **h, char **vect) {
+void _alias(cache *mm, char **vect) {
 	int i, j;
 	al_list *new = NULL;
 
@@ -75,22 +75,22 @@ void _alias(al_list **h, char **vect) {
 		return;
 
 	if (!vect[1]) {
-		print_alias_list(*h);
+		print_alias_list(mm->als);
 		return;
 	}
 
 	for (i = 1; vect[i]; i++) {
 		for (j = 0; vect[i][j]; j++) {
 			if (vect[i][j] == '=') {
-				if ((change_alias_val(*h, vect[i])))
+				if ((change_alias_val(mm->als, vect[i])))
 					break;
 				new = creat_alias_node(vect[i]);
-				prepend_alias_node(h, new);
+				prepend_alias_node(&(mm->als), new);
 				break;
 			}
 		}
 		if (vect[i][j] != '=')
-			print_alias_node(*h, vect[i]);
+			print_alias_node(mm->als, vect[i]);
 	}
 }
 

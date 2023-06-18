@@ -57,13 +57,14 @@ void reverse_dir(char *curr){
 	free(new);
 }
 
-void cd_err_msg(char *tok) {
-	_puts("Cant't cd to: ", 2);
+void cd_err_msg(char *shell_call, char *tok) {
+	_puts(shell_call, 2);
+	_puts("cd: cant't cd to ", 2);
 	_puts(tok, 2);
 	_puts("\n", 2);
 }
 
-void _change_WD(char **vect) {
+void _change_WD(cache *mm, char **vect) {
         int ch_ret = 0;
         char *path = NULL, *curr = NULL;
 
@@ -98,7 +99,7 @@ void _change_WD(char **vect) {
 
 		ch_ret = chdir(vect[1]);
 		if (ch_ret == -1) {
-			cd_err_msg(vect[1]);
+			cd_err_msg(mm->calls, vect[1]);
 			free(curr);
 			return;
 		}
