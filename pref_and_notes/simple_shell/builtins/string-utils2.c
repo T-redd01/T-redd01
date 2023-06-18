@@ -1,23 +1,24 @@
 #include "main.h"
 
 int _atoi(char *s) {
-	int i, num = 0;
+	int i = 0, flag = 0, num = 0;
 
 	if (!s || my_strcmp(s, "0"))
 		return (0);
 
-	for (i = 0; s[i]; i++) {
+	if (s[i] == '-') {
+		flag = 1;
+		i = 1;
+	}
+
+	for (; s[i]; i++) {
 		if (s[i] < 48 || s[i] > 57)
 			return (-1);
-
-		if (i == 0) {
-			num = s[i] - 48;
-		}
-		else {
-			num *= 10;
-			num += (s[i] - 48);
-		}
+		num = (num * 10) + (s[i] - 48);
 	}
+
+	if (flag)
+		num *= -1;
 	return (num);
 }
 

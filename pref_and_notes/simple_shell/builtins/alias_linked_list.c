@@ -50,7 +50,11 @@ void print_alias_node(al_list *h, char *key) {
 
 	while (h) {
 		if ((my_strcmp(h->name, key))) {
-			printf("%s=%s\n", h->name, h->val);
+			_puts(h->name, 1);
+			_puts("=", 1);
+			_puts("'", 1);
+			_puts(h->val, 1);
+			_puts("'", 1);
 			return;
 		}
 		h = h->n_al;
@@ -62,7 +66,11 @@ void print_alias_list(al_list *h) {
 		return;
 
 	while (h) {
-		printf("%s=%s\n", h->name, h->val);
+		_puts(h->name, 1);
+		_puts("=", 1);
+		_puts("'", 1);
+		_puts(h->val, 1);
+		_puts("'", 1);
 		h = h->n_al;
 	}
 }

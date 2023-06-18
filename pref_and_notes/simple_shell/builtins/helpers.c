@@ -32,12 +32,14 @@ void print_matrix(char **matrix) {
 	size_t i;
 
 	if (!matrix) {
-		printf("is nil\n");
+		_puts("is nil\n", 1);
 		return;
 	}
 
-	for (i = 0; matrix[i]; i++)
-		printf("%s\n", matrix[i]);
+	for (i = 0; matrix[i]; i++) {
+		_puts(matrix[i], 1);
+		_puts("\n", 1);
+	}
 }
 
 void free_matrix(char **matrix) {

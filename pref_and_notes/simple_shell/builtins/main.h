@@ -38,6 +38,11 @@ void print_matrix(char **matrix);
 void free_matrix(char **matrix);
 void _puts(char *str, int fd);
 
+/* helpers2.c */
+ssize_t _getline(char **buf, int fd);
+char *_realloc(char *old, size_t new_size);
+char *call_no(char *prog_name, size_t call);
+
 /* string-utils.c */
 int my_strcmp(char *s1, char *s2);
 char *_strdup(char *src);
@@ -61,11 +66,12 @@ void _setenv(char *name, char *val);
 void call_setenv(char **vect);
 
 /* _unsetenv.c */
+void _putchar(char c);
 void _unsetenv(char *name);
 void call_unsetenv(char **vect);
 
 /* direct.c */
-char *_getCWD();
+char *_getCWD(size_t num);
 void update_oldpwd(char *curr);
 void cd_err_msg(char *tok);
 void _change_WD(char **vect);
@@ -81,6 +87,10 @@ void free_alias_list(al_list *h);
 char *extract_alias_val(char *pair);
 char *extract_alias_name(char *pair);
 void _alias(al_list **h, char **vect);
+
+/* shell_exit.c */
+void shell_exit(char **vect);
+void print_exit_err(char *num);
 
 /* exp_toks.c */
 tokens *exp_tok(tokens *n);

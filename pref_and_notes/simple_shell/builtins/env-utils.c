@@ -26,15 +26,15 @@ char *_getenv(char *name) {
 
         if (!name)
                 return (NULL);
-        for (i = 0; environ[i]; i++) {
-                if ((key_cmp(environ[i], name))) {
-                        var = environ[i];
-                        while (*var != '=')
-                                var++;
-                        return (++var);
-                }
-        }
-        return (NULL);
+        for (i = 0; environ[i]; i++) {    
+			if ((key_cmp(environ[i], name))) {
+				var = environ[i];
+				while (*var != '=')
+					var++;
+				return (++var);
+			}
+		}
+		return (NULL);
 }
 
 int key_cmp(char *key, char *name) {

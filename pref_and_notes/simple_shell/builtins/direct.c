@@ -1,25 +1,35 @@
 #include "main.h"
+char *_getCWD(size_t num) {
+    size_t i;
+    char *buf = NULL;
 
-char *_getCWD(void) {
-	char dest[4096], *path = NULL;
+    buf = malloc(num * sizeof(char));
+    if (!buf) {
+        perror("my_get: buf");
+        return (NULL);
+    }   
 
-	getcwd(dest, 4096);
-	if (errno == 34) {
-		errno = 0;
-		getcwd(dest, 8192);
-	}
-	path = _strdup(dest);    
-	return (path);
+    getcwd(buf, num);
+    if (errno == 34) {
+        errno = 0;
+        for (i = 0; i < (num - 1); i++)
+            buf[i] = 'r';
+        buf[i] = '\0';
+        free(buf);
+        return (_getCWD(num * 2));
+    }   
+    return (buf);
 }
 
 void update_oldpwd(char *curr) {
-	char *new = _getCWD();
+	char *new = _getCWD(1);
 
 	if (!curr || !new)
 		return;
 
 	_setenv("OLDPWD", curr);
 	_setenv("PWD", new);
+	free(new);
 }
 
 void reverse_dir(char *curr){
@@ -48,22 +58,23 @@ void reverse_dir(char *curr){
 }
 
 void cd_err_msg(char *tok) {
-	_puts("Cant't cd to: ", 1);
-	_puts(tok, 1);
-	_puts("\n", 1);
+	_puts("Cant't cd to: ", 2);
+	_puts(tok, 2);
+	_puts("\n", 2);
 }
 
 void _change_WD(char **vect) {
         int ch_ret = 0;
         char *path = NULL, *curr = NULL;
 
-        curr = _getCWD();
+        curr = _getCWD(1);
 		if (!curr)
 			return;
 
 		if (!vect[1]) {
 			path = _strdup(_getenv("HOME"));
 			if (!path) {
+				printf("before free curr\n");
 				free(curr);
 				return;
 			}

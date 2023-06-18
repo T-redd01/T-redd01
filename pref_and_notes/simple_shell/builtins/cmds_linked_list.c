@@ -82,22 +82,36 @@ cmds *create_cmds_list(al_list *als, tokens **h)
 
 void print_cmds_list(cmds *h)
 {
-	int i = 0, j = 0;
+	size_t i = 0, j = 0;
+	char *num = NULL;
 
 	if (!h)
-		printf("h: nil\n");
+		_puts("h: nil\n", 1);
 
 	while (h)
 	{
 		i++;
-		printf("node %d:\n", i);
-		for (j = 0; h->vect[j]; j++)
-			printf("%d. %s\n", j + 1, h->vect[j]);
-		if (h->sym)
-			printf("chain: %c\n", h->sym);
-		else
-			printf("chain: (nil)\n");
-		printf("\n");
+		_puts("node ", 1);
+		num = _itoa(i);
+		_puts(num, 1);
+		free(num);
+		_puts(":\n", 1);
+		for (j = 0; h->vect[j]; j++) {
+			num = _itoa(j + 1);
+			_puts(num, 1);
+			free(num);
+			_puts(h->vect[j], 1);
+			_puts("\n", 1);
+		}
+		if (h->sym) {
+			_puts("chain: ", 1);
+			_putchar(h->sym);
+			_puts("\n", 1);
+		}
+		else {
+			_puts("chain: (nil)\n", 1);
+		}
+		_puts("\n", 1);
 		h = h->n;
 	}
 }

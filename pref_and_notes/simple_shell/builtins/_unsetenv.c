@@ -1,5 +1,9 @@
 #include "main.h"
 
+void _putchar(char c) {
+	write(1, &c, 1);
+}
+
 void _unsetenv(char *name) {
         int i, j = 0, args = matrix_count(environ);
         char **holder = NULL;

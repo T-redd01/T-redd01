@@ -47,18 +47,14 @@ void append_tokens_node(tokens **head, tokens *node) {
 
 void print_tokens_list(tokens *h)
 {
-	int node = 0;
-
-	if (!h)
-	{
-		printf("head: (nil)\n");
+	if (!h) {
+		_puts("head: (nil)\n", 1);
 		return;
 	}
 
-	while (h)
-	{
-		node++;
-		printf("%d. %s\n", node, h->token);
+	while (h) {
+		_puts(h->token, 1);
+		_puts("\n", 1);
 		h = h->n;
 	}
 }
