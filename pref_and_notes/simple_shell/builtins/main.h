@@ -35,12 +35,20 @@ typedef struct shell_cache {
 	char *calls;
 	al_list *als;
 	cmds *commands;
+	char **file_vect;
 } cache;
 
 typedef struct builtin_commands {
 	char *name;
 	void (*p)(cache *mm, char **vect);
 } builtins;
+
+/* files.c */
+int file_arg(cache *mm, char *file_name, char *prog);
+void eval_file(cache *mm, char **vect, char *prog);
+char **create_arg_vect(int num_args, char *inp);
+size_t count_line(char *inp, size_t idx);
+int count_inp_vects(char *inp);
 
 /* repl_loop.c */
 void repl_loop(cache *mm, char *name);

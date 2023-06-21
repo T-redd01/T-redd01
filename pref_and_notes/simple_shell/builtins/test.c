@@ -1,16 +1,17 @@
 #include "main.h"
 
-int main(__attribute__((unused)) int ac, __attribute__((unused)) char **av) {
-	cache mm = {NULL, NULL, NULL};
-	if (ac != 1) {
-		return (1);
-	}
-	init_environ();
-	repl_loop(&mm, av[0]);
-	/*int i;
+int main( int ac, __attribute__((unused)) char **av) {
+        int file_ret = 0;
+        cache mm = {NULL, NULL, NULL, NULL};
 
-	for (i = 0; i < 1124; i++)
-		_putchar('r');*/
-	return (0);
+        if (ac == 2) {
+                file_ret = file_arg(&mm, av[1], av[0]);
+                if (file_ret)
+                        return (EXIT_FAILURE);
+                return (EXIT_SUCCESS);
+        }
+        init_environ();
+        repl_loop(&mm, av[0]);
+        return (0);
 }
 

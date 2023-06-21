@@ -15,6 +15,7 @@ void shell_exit(cache *mm, char **vect) {
 
 	if (!vect[1]) {
 		free_matrix(environ);
+		free_matrix(mm->file_vect);
 		free_alias_list(mm->als);
 		free_cmds_list(mm->commands);
 		free(mm->calls);
@@ -29,6 +30,7 @@ void shell_exit(cache *mm, char **vect) {
 		status = (status * 10) + (vect[1][i] - 48);
 	}
 	free_matrix(environ);
+	free_matrix(mm->file_vect);
 	free_alias_list(mm->als);
 	free_cmds_list(mm->commands);
 	free(mm->calls);
