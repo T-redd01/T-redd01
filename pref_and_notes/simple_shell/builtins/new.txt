@@ -1,1 +1,49 @@
-echo
+alias c=clear l=ls
+setenv my env
+echo $my
+setenv my new
+echo $my
+unsetenv my
+echo $my; echo $_
+unsetenv _
+echo $_
+
+echo &&
+
+ls && ls
+ls && cat nil
+cat nil && ls
+
+echo 
+
+echo hastag
+#comment here
+
+echo ||
+
+cat nil || l
+l || cat nil
+l || l
+
+echo 
+
+cd 
+pwd
+cd -
+cd -
+cd -
+
+unsetenv OLDPWD
+
+cd -
+cd -
+
+cd /
+cd -
+cd -
+cd -
+
+setenv my IT_WORKS
+echo $my
+exit
+
