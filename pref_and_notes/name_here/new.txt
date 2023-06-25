@@ -1,17 +1,16 @@
 alias c=clear l=ls
-setenv my env
-echo $my
-setenv my new
-echo $my
-unsetenv my
-echo $my; echo $_
+setenv my env && echo $my
+setenv my new ; echo $my
+unsetenv my && echo $my; echo $_
 unsetenv _
 echo $_
 
 echo &&
 
 ls && ls
+echo
 ls && cat nil
+echo
 cat nil && ls
 
 echo 
@@ -22,7 +21,9 @@ echo hastag
 echo ||
 
 cat nil || l
+echo
 l || cat nil
+echo
 l || l
 
 echo 
@@ -45,5 +46,4 @@ cd -
 
 setenv my IT_WORKS
 echo $my
-exit
 

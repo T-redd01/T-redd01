@@ -40,6 +40,7 @@ void _unsetenv(char *name) {
 void call_unsetenv(__attribute__((unused)) cache *mm, char **vect) {
 	int args = 0;
 
+	errno = 0;
 	while (vect[args]) {
 		if (args == 3)
 			break;
@@ -47,11 +48,13 @@ void call_unsetenv(__attribute__((unused)) cache *mm, char **vect) {
 	}
 
 	if (args != 2) {
+		errno = 1;
 		_puts("Usage: unsetenv [VARIABLE NAME]\n", 2);
 		return;
 	}
 
 	if (!(_getenv(vect[1]))) {
+		errno = 2;
 		_puts("Variable not found\n", 2);
 		return;
 	}

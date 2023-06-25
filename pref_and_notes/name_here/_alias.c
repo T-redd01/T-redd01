@@ -71,6 +71,7 @@ void _alias(cache *mm, char **vect) {
 	int i, j;
 	al_list *new = NULL;
 
+	errno = 0;
 	if (!vect)
 		return;
 

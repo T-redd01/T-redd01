@@ -16,16 +16,16 @@ ssize_t read_inp(char **input) {
 	return (rline);
 }
 
-void repl_loop(cache *mm, char *name) {
-	ssize_t retval;
+void repl_loop(cache *mm) {
+	ssize_t g = 0;
 	size_t cmds = 0;
-	char *inp = NULL;
 
 	signal(SIGINT, &sighandler);
 	while (1) {
+		mm->chain = 1;
 		cmds++;
-		retval = read_inp(&inp);
-		if (retval == -1) {
+		g = read_inp(&(mm->inp));
+		if (g == -1) {
 			if (isatty(STDIN_FILENO))
 				_puts("\n", 1);
 			free_matrix(environ);
@@ -33,14 +33,13 @@ void repl_loop(cache *mm, char *name) {
 			exit(errno);
 		}
 
-		if (retval == 1 && *inp == '\n') {
-			free(inp);
+		if (g == 1 && *(mm->inp) == '\n') {
+			free(mm->inp);
 			continue;
 		}
-		mm->commands = parser(mm->als, inp);
-		free(inp);
-		mm->calls = call_no(name, cmds);
-		eval_cmds(mm);
+		mm->calls = call_no(mm->name, cmds);
+		parser(mm, mm->inp);
+		free(mm->inp);
 		free(mm->calls);
 	}
 }

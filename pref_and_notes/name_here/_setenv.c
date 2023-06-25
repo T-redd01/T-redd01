@@ -87,6 +87,7 @@ void _setenv(char *name, char *val) {
 void call_setenv(__attribute__((unused)) cache *mm, char **vect) {
 	int args = 0;
 
+	errno = 0;
 	while (vect[args]) {
 		if (args == 4)
 			break;
@@ -94,6 +95,7 @@ void call_setenv(__attribute__((unused)) cache *mm, char **vect) {
 	}
 
 	if (args != 3) {
+		errno = 1;
 		_puts("Usage: setenv [VARIABLE NAME] [VARIABLE VALUE]\n", 2);
 		return;
 	}

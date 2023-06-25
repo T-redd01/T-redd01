@@ -14,6 +14,10 @@ void init_environ(void) {
 	holder[i] = NULL;
 
 	environ = malloc((args + 1) * sizeof(char *));
+	if (!environ) {
+		perror("init_environ: environ");
+		return;
+	}
 	for (i = 0; holder[i]; i++)
 		environ[i] = holder[i];
 	environ[i] = NULL;

@@ -63,13 +63,15 @@ char **create_arg_vect(int num_args, char *inp) {
         return (new);
 }
 
-void eval_file(cache *mm, __attribute__((unused)) char **vect, __attribute__((unused)) char *prog) {
+void eval_file(__attribute__((unused)) cache *mm, __attribute__((unused)) char **vect, __attribute__((unused)) char *prog) {
         size_t i;
 
-        for (i = 0; mm->file_vect[i]; i++) {
-                mm->commands = parser(mm->als,mm->file_vect[i]);
+        if (!(mm->file_vect))
+			return;
+
+		for (i = 0; mm->file_vect[i]; i++) {
                 mm->calls = call_no(prog, (i + 1));
-                eval_cmds(mm);
+                parser(mm, mm->file_vect[i]);
                 free(mm->calls);
         }
         free_alias_list(mm->als);
@@ -86,22 +88,22 @@ int file_arg(cache *mm, char *file_name, char *prog) {
         fd = open(file_name, O_RDONLY);
         if (fd == -1) {
             _puts(prog, 2);
-                        _puts(": 0: Can't open ", 2);
-                        _puts(file_name, 2);
-                        _puts("\n", 2);
-                        return (1);
+            _puts(": 0: Can't open ", 2);
+            _puts(file_name, 2);
+            _puts("\n", 2);
+            return (1);
         }
         g = _getline(&f_inp, fd);
         if (g == -1) {
-                close(fd);
-                return (1);
+        	close(fd);
+        	return (1);
         }
         arg_count = count_inp_vects(f_inp);
         mm->file_vect = create_arg_vect(arg_count, f_inp);
         free(f_inp);
-                init_environ();
-                eval_file(mm, mm->file_vect, prog);
-                free_matrix(environ);
+        init_environ();
+        eval_file(mm, mm->file_vect, prog);
+        free_matrix(environ);
         free_matrix(mm->file_vect);
         return (0);
 }

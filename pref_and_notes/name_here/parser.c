@@ -78,6 +78,53 @@ tokens *create_delim_tok(char *input, size_t *idx) {
 	return (new);
 }
 
+int find_tok_delim(char *inp, size_t idx) {
+	if (inp == NULL) {
+		printf("inp is null\n");
+		return (0);
+	}
+
+	if (inp[idx] == '\0')
+		return (1);
+	else if (inp[idx] == ';')
+		return (1);
+	else if (inp[idx] == '&' && inp[idx + 1] == '&')
+		return (1);
+	else if (inp[idx] == '|' && inp[idx + 1] == '|')
+		return (1);
+	else
+		return (0);
+}
+
+void parser(__attribute__((unused)) cache *mm, char *input) {
+	tokens *new = NULL;
+	size_t i;
+
+	if (!input)
+		return;
+
+	for (i = 0; input[i]; i++) {
+		if (!(find_delim(input, i))) {
+			if (input[i] == '#')
+				break;
+			new = create_tok_node(input, i);
+			exp_tok(new);
+			append_tokens_node(&(mm->toks), new);
+			while (!(find_delim(input, i)))
+				i++;
+		}
+		if ((find_tok_delim(input, i))) {
+			new = create_delim_tok(input, &i);
+			append_tokens_node(&(mm->toks), new);
+			run_eval(mm);
+		}
+		if (input[i] == '\0')
+			i--;
+	}
+	run_eval(mm);
+	return;
+}
+/*
 cmds *parser(al_list *als, char *input) {
 	tokens *head = NULL, *new = NULL;
 	cmds *commands = NULL;
@@ -111,4 +158,5 @@ cmds *parser(al_list *als, char *input) {
 	free_tokens_list(head);
 	return (commands);
 }
+*/
 

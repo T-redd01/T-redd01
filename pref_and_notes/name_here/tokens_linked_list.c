@@ -73,5 +73,6 @@ void free_tokens_list(tokens *h)
 		free(h);
 		h = tmp;
 	}
+	h = NULL;
 }
 

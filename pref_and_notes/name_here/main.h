@@ -32,8 +32,13 @@ typedef struct cmd_vect_list {
 } cmds;
 
 typedef struct shell_cache {
+	char *name;
 	char *calls;
+	char *inp;
+	int chain;
+	char *cmd;
 	al_list *als;
+	tokens *toks;
 	cmds *commands;
 	char **file_vect;
 } cache;
@@ -51,13 +56,15 @@ size_t count_line(char *inp, size_t idx);
 int count_inp_vects(char *inp);
 
 /* repl_loop.c */
-void repl_loop(cache *mm, char *name);
+void repl_loop(cache *mm);
 ssize_t read_inp(char **input);
 void sighandler(int sig);
 
 /* eval_cmds.c */
 void eval_cmds(cache *mm);
-void exec_func(char **vect);
+void exec_func(char *cmd, char **vect);
+void to_chain(cache *mm);
+void run_eval(cache *mm);
 
 /* builtins.c */
 int builtin_findr(cache *mm, char **vect);
@@ -122,6 +129,7 @@ void _alias(cache *mm, char **vect);
 
 /* shell_exit.c */
 void shell_exit(cache *mm, char **vect);
+void free_shell_cache(cache *mm);
 void print_exit_err(char *shell_call, char *num);
 
 /* exp_toks.c */
@@ -143,12 +151,12 @@ cmds *create_cmds_node(al_list *als, tokens *arg_strt, size_t arg_count);
 
 /* parser.c */
 char *find_alias(al_list *h, tokens *n);
-cmds *parser(al_list *als, char *input);
+void parser(cache *mm, char *input);
 tokens *create_delim_tok(char *input, size_t *idx);
 tokens *create_tok_node(char *inp, size_t idx);
 
 /* find_bin.c */
-int find_bin(cmds *node, char *shell_call);
+int find_bin(char **cmd, cmds *node, char *shell_call);
 char *create_path(char *n, size_t bin_len, char *path, size_t *idx);
 void not_found(char *shell_call, char *name);
 

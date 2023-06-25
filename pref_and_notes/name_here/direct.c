@@ -1,6 +1,6 @@
 #include "main.h"
 char *_getCWD(size_t num) {
-    size_t i;
+    /*size_t i;*/
     char *buf = NULL;
 
     buf = malloc(num * sizeof(char));
@@ -12,9 +12,9 @@ char *_getCWD(size_t num) {
     getcwd(buf, num);
     if (errno == 34) {
         errno = 0;
-        for (i = 0; i < (num - 1); i++)
-            buf[i] = 'r';
-        buf[i] = '\0';
+        /*for (i = 0; i < (num - 1); i++)
+            buf[i] = 'r';*/
+        buf[0] = 'r';
         free(buf);
         return (_getCWD(num * 2));
     }   
@@ -58,6 +58,7 @@ void reverse_dir(char *curr){
 }
 
 void cd_err_msg(char *shell_call, char *tok) {
+	errno = 2;
 	_puts(shell_call, 2);
 	_puts("cd: cant't cd to ", 2);
 	_puts(tok, 2);
@@ -84,6 +85,7 @@ void _change_WD(cache *mm, char **vect) {
 				perror("_change_WD: home");
 				free(curr);
 				free(path);
+				errno = 1;
 			}
 			free(path);
 			update_oldpwd(curr);

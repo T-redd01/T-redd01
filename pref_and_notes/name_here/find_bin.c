@@ -38,7 +38,7 @@ char *create_path(char *n, size_t bin_len, char *path, size_t *idx) {
 	return (search);
 }
 
-int find_bin(cmds *node, char *shell_call) {
+int find_bin(char **cmd, cmds *node, char *shell_call) {
 	size_t i, bin_len = 0;
 	char *path = NULL, *search = NULL;
 	struct stat buf;
@@ -46,20 +46,22 @@ int find_bin(cmds *node, char *shell_call) {
 	if (!node || !(node->vect[0]))
 		return (0);
 
-	if ((stat(node->vect[0], &buf)) == 0)
+	if ((stat(node->vect[0], &buf)) == 0) {
+		*cmd = _strdup(node->vect[0]);
 		return (1);
+	}
 
 	path = _getenv("PATH");
 	if (!path)
 		return (0);
 
+	*cmd = NULL;
 	bin_len = _strlen(node->vect[0]);
 	for (i = 0; path[i]; i++) {
 		if (path[i] && path[i] != ':') {
 			search = create_path(node->vect[0], bin_len, path, &i);
 			if (!(stat(search, &buf))) {
-				free(node->vect[0]);
-				node->vect[0] = search;
+				*cmd = search;
 				return (1);
 			}
 			free(search);
